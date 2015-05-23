@@ -1,0 +1,49 @@
+<div class="container clearfix">
+  <div class="grid_12 categories">
+    <ul>
+      {% for category in categories.active %}
+        <li>{{ category | link_to }}</li>
+      {% endfor %}
+      <li><a href="/products">All Products</a></li>
+    </ul>
+  </div>
+</div>
+
+{% paginate products from products.current by theme.products_per_page %}
+  <div class="container clearfix">
+    <div class="product_list">
+      {% if products != blank %}
+        <ul class="clearfix">
+          {% for product in products %}
+            <li class="grid_3">
+              <a href="{{ product.url }}">
+                <figure>
+                  <img src="{{ product.image | product_image_url | constrain: '600' }}" alt="Image of {{ product.name | escape }}">
+
+                  <figcaption>
+                    <h4>{{ product.name | truncate: 28 }}</h4>
+                    <span>{{ product.default_price | money_with_sign }} {% if product.on_sale %} | On Sale {% endif %} {% case product.status %} {% when 'sold-out' %} | Sold Out {% when 'coming-soon' %} | Coming Soon {% endcase %}</span>
+                  </figcaption>
+                </figure>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+
+        {% if paginate.next %}
+          {% if paginate.next.is_link %}
+            <div class="container clearfix">
+              <div class="grid_12" id="load_more">
+                <a class="button more" href="{{paginate.next.url}}" data-total-pages="{{paginate.pages}}" data-current-page="{{paginate.current_page}}">Load More</a>
+              </div>
+            </div>
+          {% endif %}
+        {% endif %}
+      {% else %}
+        <h1>No products found.</h1>
+      {% endif %}
+    </div>
+  </div>
+{% endpaginate %}
+
+

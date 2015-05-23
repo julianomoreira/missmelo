@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!--[if lte IE 9 ]><html class="ie"><![endif]-->
+<!--[if gt IE 9 ]><html><![endif]-->
+<!--[if !IE]>--><html><!--<![endif]-->
+  <head>
+    <title>{{ store.name }} &mdash; {{ page.name }}</title>
+
+    <meta charset="utf-8">
+    <meta name="description" content="{{ page.meta_description }}">
+    <meta name="keywords" content="{{ page.meta_keywords }}">
+    <meta name="viewport" content="width=device-width,maximum-scale=1.0,user-scalable=no">
+
+    <link href="{{ theme | theme_css_url }}" rel="stylesheet">
+    
+    {{ head_content }}
+  </head>
+
+  <body class="{{ page.permalink }}">
+    <header>
+      <div class="container clearfix">
+        <div class="grid_3 search_bar">
+          <form name="search" action="/products" method="get" autocomplete="off">
+            <input type="search" name="search" value="Search Products...">
+            <input type="submit" name="submit" value="GO">
+          </form>
+        </div>
+        <div class="grid_4 logo">
+          <a href="/" title="{{ store.name | escape }}">
+            {% if theme.logo != blank %}
+              <img src="{{ theme.logo.url }}" alt="{{ store.name }}">
+            {% else %}
+              <h1>{{ store.name }}</h1>
+            {% endif %}
+          </a>
+        </div>
+
+        <div class="cart">
+          <a href="/cart" data-show-cart="data-show-cart">
+            <span>{{ cart.total | money_with_sign }}</span>
+          </a>
+        </div>
+        
+      </div>
+    </header>
+
+    <aside>
+      <a href="#">Menu</a>
+
+      <div class="wrapper">
+        {% if artists.active != blank %}
+          <ul>
+            {% for artist in artists.active %}
+              <li>{{ artist | link_to }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <ul>
+          {% for page in pages.all %}
+            <li>{{ page | link_to }}</li>
+          {% endfor %}
+
+          <li><a href="/contact">Contact Us</a></li>
+
+          {% if store.website != blank %}
+            <li><a href="{{ store.website }}">Back to Site</a></li>
+          {% endif %}
+        </ul>
+
+        <ul class="social">
+          {% if theme.facebook_username != blank %}
+            <li><a class="facebook" href="https://facebook.com/{{ theme.facebook_username }}">Facebook</a></li>
+          {% endif %}
+
+          {% if theme.twitter_username != blank %}
+            <li><a class="twitter" href="https://twitter.com/{{ theme.twitter_username }}">Twitter</a></li>
+          {% endif %}
+
+          {% if theme.instagram_username != blank %}
+            <li><a class="instagram" href="https://instagram.com/{{ theme.instagram_username }}">Instagram</a></li>
+          {% endif %}
+
+          {% if theme.pinterest_username != blank %}
+            <li><a class="pinterest" href="https://pinterest.com/{{ theme.pinterest_username }}">Pinterest</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </aside>
+
+    <section class="content">
+      {% if page.category == 'custom' %}
+        <div class="container clearfix">
+          <div class="grid_12 categories">
+            <ul>
+              {% for category in categories.active %}
+                <li>{{ category | link_to }}</li>
+              {% endfor %}
+              <li><a href="/products">All Products</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="container clearfix">
+          <div class="grid_12" id="breadcrumbs">
+            <hr>
+            <h4>
+              <a href="/" title="store home">Home</a>
+              {% for category in product.categories limit:1 %} / {{ category | link_to }}{% endfor %} /
+              <a href="{{ page.url }}" title="{{ page.name }}">{{ page.name }}</a>
+            </h4>
+          </div>
+
+          <div class="grid_12 {{ page.category }}">{{ page_content | paragraphs }}</div>
+        </div>
+      {% else %}
+        {{ page_content }}
+      {% endif %}
+    </section>
+
+    <footer>
+      <div class="container">
+        <p>&copy; {{ 'Today' | date: '%Y' }} {{ store.name }}</p>
+        <p>{{ bigcartel_credit}}</p>
+      </div>
+    </footer>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="{{ 'api' | theme_js_url }}" type="text/javascript"></script>
+    <script src="{{ theme | theme_js_url }}"></script> 
+  </body>
+</html>
