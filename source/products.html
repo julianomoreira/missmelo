@@ -9,6 +9,12 @@
   </div>
 </div>
 
+My page name is {{ page.name | capitalize | truncate }}
+
+{% if page.name == 'Belts' %}
+  <p>Hey it's here</p>
+{% endif %}
+
 {% paginate products from products.current by theme.products_per_page %}
   <div class="container clearfix">
     <div class="product_list">
@@ -45,5 +51,3 @@
     </div>
   </div>
 {% endpaginate %}
-
-
